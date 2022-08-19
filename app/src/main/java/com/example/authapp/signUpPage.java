@@ -207,7 +207,7 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
                 });
 
     }
-
+//this was too to check single username
 //    public static boolean checkIfUserNameExits(String username, DataSnapshot dataSnapshot){
 //        Log.d(TAG,"checkIfUserNameExists : checking if "+username+"already exists.");
 //        User user = new User();
