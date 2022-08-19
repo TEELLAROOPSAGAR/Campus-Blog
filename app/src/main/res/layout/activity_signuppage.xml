@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".signUpPage">
+
+    <TextView
+        android:id="@+id/txtVHead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Campus news"
+        android:textAlignment="center"
+        android:textColor="#308FDC"
+        android:textSize="40sp" />
+
+    <EditText
+        android:id="@+id/txtEName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtVHead"
+        android:layout_marginTop="10dp"
+        android:hint="Full Name" />
+
+    <EditText
+        android:id="@+id/txtEUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtEName"
+        android:layout_marginTop="8dp"
+        android:hint="user name" />
+    <EditText
+        android:id="@+id/txtEEmail"
+        android:hint="Email"
+        android:layout_below="@+id/txtEUserName"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/txtEPassword"
+        android:hint="password"
+        android:layout_below="@+id/txtEEmail"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/txtECollege"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtEPassword"
+        android:layout_marginTop="8dp"
+        android:hint="College" />
+
+    <EditText
+        android:id="@+id/txtEBranch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtECollege"
+        android:layout_marginTop="8dp"
+        android:hint="Group/Branch" />
+    <EditText
+        android:id="@+id/txtEAge"
+        android:hint="Age"
+        android:layout_below="@+id/txtEBranch"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/txtEPhone"
+        android:hint="phone no: "
+        android:layout_below="@+id/txtEAge"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_width="250sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="85dp"
+        android:layout_below="@+id/txtEPhone"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="78dp"
+        android:backgroundTint="#308FDC"
+        android:text="Signup"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
+
+
+</RelativeLayout>
