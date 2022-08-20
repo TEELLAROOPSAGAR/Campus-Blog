@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Authapp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#308FDC</item>
+        <item name="colorPrimary">@color/app_color</item>
         <item name="colorPrimaryVariant">#308FDC</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
