@@ -27,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class SearchPage extends AppCompatActivity {
-
     private DatabaseReference reference;
     private MyAdapter myadapter;
     private ArrayList<User> list;
