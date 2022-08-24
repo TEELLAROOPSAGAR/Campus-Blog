@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         switch(v.getId()){
             case R.id.txtVSignUp:
-                startActivity(new Intent(this,signUpPage.class));
+                startActivity(new Intent(this,preSignUpPage.class));
                 break;
 
             case R.id.btnLogin:
