@@ -6,12 +6,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.authapp.jsonFiles.OpenJSON;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class preSignUpPage extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener{
 
@@ -22,10 +32,24 @@ public class preSignUpPage extends AppCompatActivity implements View.OnClickList
     private TextInputEditText txtEPassword;
     private TextInputEditText txtEConfirmPassword;
     private FloatingActionButton btnNext;
+
+    private Spinner spnState, spnDistrict;
+
+    private ArrayList<String> states;
+    private ArrayList<String> arrayDistricts;
+
+
+    //JSON Array
+    private JSONArray result;
+    JSONObject j = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_sign_up_page);
+
+        //Initializing the ArrayList
+        states = new ArrayList<String>();
+        arrayDistricts = new ArrayList<String>();
 
         txtEFirstName = findViewById(R.id.txtEFirstName);
         txtELastName = findViewById(R.id.txtELastName);
@@ -42,7 +66,61 @@ public class preSignUpPage extends AppCompatActivity implements View.OnClickList
         txtEPassword.setOnFocusChangeListener(this);
         txtEConfirmPassword.setOnFocusChangeListener(this);
 
+        spnState = (Spinner) findViewById(R.id.spnState);
+        spnDistrict = (Spinner) findViewById(R.id.spnDistrict);
+
+        spnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    JSONObject jDistricts = result.getJSONObject(i);
+                    System.out.println(jDistricts);
+                    JSONArray districts = jDistricts.getJSONArray("districts");
+                    arrayDistricts.clear();
+                    for (int j=0; j < districts.length(); j++){
+
+                        arrayDistricts.add(districts.getString(j));
+                    }
+                    spnDistrict.setAdapter(new ArrayAdapter<String>(preSignUpPage.this, android.R.layout.simple_spinner_dropdown_item, arrayDistricts));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        try {
+
+            JSONObject objStates = new JSONObject(OpenJSON.readJSONFromAsset(this, "states-and-districts.json"));
+            result = objStates.getJSONArray("states");
+            getStates(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    private void getStates(JSONArray j){
+        for(int i=0;i<j.length();i++){
+            try {
+                //Getting json object
+                JSONObject json = j.getJSONObject(i);
+
+                //Adding the name of the student to array list
+                states.add(json.getString("state"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Setting adapter to show the items in the spnState
+        spnState.setAdapter(new ArrayAdapter<String>(preSignUpPage.this, android.R.layout.simple_spinner_dropdown_item, states));
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -91,7 +169,7 @@ public class preSignUpPage extends AppCompatActivity implements View.OnClickList
 
     private void sendToSignUp() {
         if(!checkIfUserNameExits(txtEUserName.getText().toString().trim())){
-            Intent intent = new Intent(preSignUpPage.this, signUpPage.class);
+            Intent intent = new Intent(preSignUpPage.this, NextSignUpPage.class);
             intent.putExtra("FirstName", txtEFirstName.getText().toString().trim());
             intent.putExtra("LastName", txtELastName.getText().toString().trim());
             intent.putExtra("UserName", txtEUserName.getText().toString().trim());

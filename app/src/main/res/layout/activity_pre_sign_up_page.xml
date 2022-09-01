@@ -8,13 +8,13 @@
     android:layout_margin="15dp"
     tools:context=".preSignUpPage">
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/studentprofile"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="20dp"/>
+<!--    <ImageView-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:src="@drawable/studentprofile"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_marginBottom="20dp"/>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,12 +111,25 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Spinner
+        android:id="@+id/spnState"
+        android:layout_width="match_parent"
+        android:background="@drawable/gradient_spinner"
+        android:layout_height="60dp" />
+    <Spinner
+        android:id="@+id/spnDistrict"
+        android:layout_width="match_parent"
+        android:layout_margin="2dp"
+        android:background="@drawable/gradient_spinner"
+        android:layout_height="60dp" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnNext"
-        android:layout_width="wrap_content"
+        android:layout_width="74dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_arrow_forward"
-        android:layout_margin="15dp"/>
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_arrow_forward" />
+
 
 </LinearLayout>
