@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".signUpPage">
 
     <TextView
@@ -14,65 +16,111 @@
         android:textColor="#308FDC"
         android:textSize="40sp" />
 
-    <EditText
-        android:id="@+id/txtEName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtVHead"
-        android:layout_marginTop="10dp"
-        android:hint="Full Name" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ProfileImage"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:src="@drawable/default_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setup_toolBar" />
 
-    <EditText
-        android:id="@+id/txtEUserName"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtEName"
-        android:layout_marginTop="8dp"
-        android:hint="user name" />
-    <EditText
-        android:id="@+id/txtEEmail"
+        android:hint="FullName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEName"
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEUserName"
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEBranch"
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Email"
-        android:layout_below="@+id/txtEUserName"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/txtEPassword"
-        android:hint="password"
-        android:layout_below="@+id/txtEEmail"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEEmail"
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/txtECollege"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtEPassword"
-        android:layout_marginTop="8dp"
-        android:hint="College" />
+        android:hint="Password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEPassword"
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/txtEBranch"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lytEConfirmPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtECollege"
-        android:layout_marginTop="8dp"
-        android:hint="Group/Branch" />
-    <EditText
-        android:id="@+id/txtEAge"
-        android:hint="Age"
-        android:layout_below="@+id/txtEBranch"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/txtEPhone"
-        android:hint="phone no: "
-        android:layout_below="@+id/txtEAge"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:hint="Confirm Password"
+        app:passwordToggleEnabled="true"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_margin="2dp"
+            android:maxLines="1"
+            android:inputType="textPassword"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
 
     <Button
         android:id="@+id/btnSignUp"
@@ -82,7 +130,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="85dp"
         android:layout_below="@+id/txtEPhone"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="22dp"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="78dp"
         android:backgroundTint="#308FDC"
@@ -91,4 +139,4 @@
         android:textSize="20sp" />
 
 
-</RelativeLayout>
+</LinearLayout>

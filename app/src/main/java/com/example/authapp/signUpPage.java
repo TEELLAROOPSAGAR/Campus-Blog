@@ -5,11 +5,18 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.webkit.PermissionRequest;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +25,7 @@ import android.widget.Toast;
 import com.example.authapp.utils.StringManipulation;
 import com.example.authapp.utils.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,15 +34,34 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.single.PermissionListener;
+
+import java.io.IOException;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class signUpPage extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
     private DatabaseReference reference;
     private TextView txtVHead;
-    private EditText txtEName,txtEAge,txtEEmail,txtEPassword,txtEUserName,txtEPhone,txtECollege,txtEBranch;
+    private EditText txtEName,txtEEmail,txtEPassword,txtEConfirmPassword,txtEUserName,txtEBranch;
     private Button btnSignUp;
+    private CircleImageView profileImage;
     public boolean check = true;
+    int Image_Request_Code = 1;
+    Uri FilePathUri;
+    Bitmap bitmap;
+    StorageReference storageReference;
+    User user = new User();
+    String uu="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +71,24 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
         mAuth = FirebaseAuth.getInstance();
         txtVHead = (TextView)findViewById(R.id.txtVHead);
         txtEPassword = (EditText)findViewById(R.id.txtEPassword);
+        txtEConfirmPassword = (EditText)findViewById(R.id.txtEConfirmPassword);
         txtEName = (EditText)findViewById(R.id.txtEName);
-        txtEAge = (EditText)findViewById(R.id.txtEAge);
         txtEEmail=  (EditText)findViewById(R.id.txtEEmail);
         txtEUserName = (EditText)findViewById(R.id.txtEUserName);
-        txtEPhone = (EditText)findViewById(R.id.txtEPhone);
-        txtECollege = (EditText)findViewById(R.id.txtECollege);
         txtEBranch=  (EditText)findViewById(R.id.txtEBranch);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
+        profileImage = (CircleImageView)findViewById(R.id.ProfileImage);
 
         txtVHead.setOnClickListener(this);
         btnSignUp.setOnClickListener(this);
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImg(view);
 
-
+            }
+        });
+        storageReference = FirebaseStorage.getInstance().getReference();
     }
     @Override
     public void onClick(View v){
@@ -66,6 +98,7 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
                 break;
             case R.id.btnSignUp:
                 CheckUserDetails();
+                UploadImageFileToFirebaseStorage(bitmap);
                 break;
 
         }
@@ -75,12 +108,10 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
         check = true;
         String email = txtEEmail.getText().toString().trim();
         String password = txtEPassword.getText().toString().trim();
-        String age = txtEAge.getText().toString().trim();
+        String confirmPassword = txtEConfirmPassword.getText().toString().trim();
         String name = txtEName.getText().toString().trim();
         String username = txtEUserName.getText().toString().trim();
-        String college = txtECollege.getText().toString().trim();
         String branch = txtEBranch.getText().toString().trim();
-        String phone = txtEPhone.getText().toString().trim();
 
         DataSnapshot dataSnapshot = null;
         if(name.isEmpty()){
@@ -140,6 +171,11 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
             txtEPassword.requestFocus();
             return;
         }
+        if(!password.equals(confirmPassword)){
+            txtEConfirmPassword.setError("Password does not match", null);
+            txtEConfirmPassword.requestFocus();
+            return;
+        }
 
         if(password.length()<6){
             txtEPassword.setError("Minimum length should be 6");
@@ -147,47 +183,26 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
             return;
         }
 
-
-
-        if(college.isEmpty()){
-            txtECollege.setError("This field can't be empty");
-            txtECollege.requestFocus();
-            return;
-        }
         if(branch.isEmpty()){
             txtEBranch.setError("This field can't be empty");
             txtEBranch.requestFocus();
             return;
         }
-        if(age.isEmpty()){
-            txtEAge.setError("Age is required");
-            txtEAge.requestFocus();
-            return;
-        }
-        if(phone.isEmpty()){
-            txtEPhone.setError("This field can't be empty");
-            txtEPhone.requestFocus();
-            return;
-        }
-        if(phone.length()!=10){
-            txtEPhone.setError("Enter  a valid Number");
-            txtEName.requestFocus();
-            return;
-        }
+
+
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User();
-                            user.setAge(age);
+
                             user.setEmail(email);
                             user.setName(name);
                             user.setUsername(username);
                             user.setBranch(branch);
-                            user.setPhone(phone);
-                            user.setCollege(college);
+                            user.setProfileThumbUrl(uu);
+
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -225,4 +240,95 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
 //        return false;
 //    }
 
+
+    public void selectImg(View view) {
+        Dexter.withActivity(signUpPage.this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("image/*");
+                        startActivityForResult(Intent.createChooser(intent,"Select Your Image"),1);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(com.karumi.dexter.listener.PermissionRequest permissionRequest, PermissionToken permissionToken) {
+
+                    }
+
+                }).check();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v("rcode",requestCode+"");
+        if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            FilePathUri = data.getData();
+
+            try {
+
+                // Getting selected image into Bitmap.
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), FilePathUri);
+
+                // Setting up bitmap selected image into ImageView.
+                profileImage.setImageBitmap(bitmap);
+
+                // After selecting image change choose button above text.
+
+            }
+            catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String GetFileExtension(Uri uri) {
+
+        ContentResolver contentResolver = getContentResolver();
+
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+        // Returning the file Extension.
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
+
+    }
+
+    public void UploadImageFileToFirebaseStorage(Bitmap bitmap){
+
+
+        StorageReference storageReference2nd = storageReference.child("Profile_Pics/" + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+        storageReference2nd.putFile(FilePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String imageUrl = uri.toString();
+                        uu = imageUrl;
+                        Log.v("pimg",imageUrl);
+                        user.setProfileThumbUrl(imageUrl);
+                        //createNewPost(imageUrl);
+//                        String ImageUploadId = databaseReference.push().getKey();
+//                        ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, imageUrl);
+//
+//
+//                        databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+                    }
+                });
+            }
+        });
+
+    }
 }

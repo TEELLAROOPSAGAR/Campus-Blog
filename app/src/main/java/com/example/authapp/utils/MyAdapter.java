@@ -40,11 +40,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
          User user = list.get(position);
         holder.username.setText("username  : "+user.getUsername());
          holder.name.setText("Name   : "+user.getName());
-        holder.college.setText("college : "+user.getCollege());
         holder.branch.setText("branch  : "+user.getBranch());
         holder.email.setText("email    : "+user.getEmail());
-        holder.phone.setText("phone   : "+user.getPhone());
-        holder.age.setText("age        : "+user.getAge());
 
     }
 
@@ -57,18 +54,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
     public  class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView name,email,age,username,college,branch,phone;
+        TextView name,email,username,branch;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             name=itemView.findViewById(R.id.txtVName);
             email=itemView.findViewById(R.id.txtVEmailAddress);
-            age=itemView.findViewById(R.id.txtVAge);
             username=itemView.findViewById(R.id.txtVUserName);
-            college=itemView.findViewById(R.id.txtVCollege);
             branch=itemView.findViewById(R.id.txtVBranch);
-            phone=itemView.findViewById(R.id.txtVPhone);
         }
 
         @Override

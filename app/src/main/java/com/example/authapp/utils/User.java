@@ -8,6 +8,15 @@ public class User {
     public String branch;
     public String phone;
     public String username;
+    public String profileThumbUrl;
+
+    public String getProfileThumbUrl() {
+        return profileThumbUrl;
+    }
+
+    public void setProfileThumbUrl(String profileThumbUrl) {
+        this.profileThumbUrl = profileThumbUrl;
+    }
 
     public String getName() {
         return name;
@@ -17,13 +26,13 @@ public class User {
         this.name = name;
     }
 
-    public String getAge() {
-        return age;
-    }
+//    public String getAge() {
+//        return age;
+//    }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
+//    public void setAge(String age) {
+//        this.age = age;
+//    }
 
     public String getEmail() {
         return email;
@@ -33,13 +42,13 @@ public class User {
         this.email = email;
     }
 
-    public String getCollege() {
-        return college;
-    }
+//    public String getCollege() {
+//        return college;
+//    }
 
-    public void setCollege(String college) {
-        this.college = college;
-    }
+//    public void setCollege(String college) {
+//        this.college = college;
+//    }
 
     public String getBranch() {
         return branch;
@@ -49,13 +58,13 @@ public class User {
         this.branch = branch;
     }
 
-    public String getPhone() {
-        return phone;
-    }
+//    public String getPhone() {
+//        return phone;
+//    }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+//    public void setPhone(String phone) {
+//        this.phone = phone;
+//    }
 
     public String getUsername() {
         return username;

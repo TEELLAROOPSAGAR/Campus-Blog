@@ -169,13 +169,13 @@ public class preSignUpPage extends AppCompatActivity implements View.OnClickList
 
     private void sendToSignUp() {
         if(!checkIfUserNameExits(txtEUserName.getText().toString().trim())){
-            Intent intent = new Intent(preSignUpPage.this, NextSignUpPage.class);
-            intent.putExtra("FirstName", txtEFirstName.getText().toString().trim());
-            intent.putExtra("LastName", txtELastName.getText().toString().trim());
-            intent.putExtra("UserName", txtEUserName.getText().toString().trim());
-            intent.putExtra("Email", txtEEmail.getText().toString().trim());
-            intent.putExtra("Password", txtEPassword.getText().toString().trim());
-            startActivity(intent);
+//            Intent intent = new Intent(preSignUpPage.this, NextSignUpPage.class);
+//            intent.putExtra("FirstName", txtEFirstName.getText().toString().trim());
+//            intent.putExtra("LastName", txtELastName.getText().toString().trim());
+//            intent.putExtra("UserName", txtEUserName.getText().toString().trim());
+//            intent.putExtra("Email", txtEEmail.getText().toString().trim());
+//            intent.putExtra("Password", txtEPassword.getText().toString().trim());
+//            startActivity(intent);
         }
         else{
             Toast.makeText(this, "Username already taken.", Toast.LENGTH_SHORT).show();

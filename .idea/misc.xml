@@ -11,7 +11,11 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/authapp/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/authapp/app/src/main/res/layout/activity_profile.xml" value="0.2" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/authapp/app/src/main/res/layout/activity_signuppage.xml" value="0.2" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.244" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/drawable/gradient_spinner.xml" value="0.217" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/drawable/ic_arrow_forward.xml" value="0.1155" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/drawable/ic_launcher_background.xml" value="0.244" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/drawable/search_design.xml" value="0.1155" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/layout/activity_add_post.xml" value="0.1" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/layout/activity_display_images.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
@@ -21,6 +25,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/layout/activity_pre_sign_up_page.xml" value="0.17572463768115942" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/layout/activity_search.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/layout/activity_signuppage.xml" value="0.25" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/layout/blog_list_item.xml" value="0.2" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/test/campus-news/app/src/main/res/layout/recyclerview_items.xml" value="0.27447916666666666" />
       </map>
     </option>

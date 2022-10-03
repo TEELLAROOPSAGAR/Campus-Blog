@@ -52,11 +52,9 @@ public class MyProfile extends AppCompatActivity {
                 user=snapshot.getValue(User.class);
                 username.setText("username  : "+user.getUsername());
                 name.setText("Name   : "+user.getName());
-                college.setText("college : "+user.getCollege());
+
                 branch.setText("branch  : "+user.getBranch());
                 email.setText("email    : "+user.getEmail());
-                phone.setText("phone   : "+user.getPhone());
-                age.setText("age        : "+user.getAge());
             }
 
             @Override

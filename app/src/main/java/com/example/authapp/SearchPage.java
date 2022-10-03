@@ -99,8 +99,6 @@ public class SearchPage extends AppCompatActivity {
                     assert user != null;
                     if(user.getName().replaceAll("\\s+","").toLowerCase().contains((text.replaceAll("\\s+","")).toLowerCase()))
                       list.add(user);
-                    if(user.getCollege().equals(text))
-                        list.add(user);
                 }
 
                 if(list.isEmpty())  txtVNoDataFound.setText("oops!No data found");
@@ -124,10 +122,10 @@ public class SearchPage extends AppCompatActivity {
                 Intent intent= new Intent(getApplicationContext(),Others_Profile_Page.class);
                 intent.putExtra("username",list.get(position).getUsername());
                 intent.putExtra("name",list.get(position).getName());
-                intent.putExtra("college",list.get(position).getCollege());
+//                intent.putExtra("college",list.get(position).getCollege());
                 intent.putExtra("branch",list.get(position).getBranch());
-                intent.putExtra("age",list.get(position).getAge());
-                intent.putExtra("phone",list.get(position).getPhone());
+//                intent.putExtra("age",list.get(position).getAge());
+//                intent.putExtra("phone",list.get(position).getPhone());
                 intent.putExtra("email",list.get(position).getEmail());
                 startActivity(intent);
             }

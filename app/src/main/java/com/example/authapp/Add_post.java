@@ -134,7 +134,6 @@ public class Add_post extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             FilePathUri = data.getData();
