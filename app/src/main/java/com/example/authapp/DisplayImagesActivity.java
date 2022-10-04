@@ -1,13 +1,16 @@
 package com.example.authapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayImagesActivity extends AppCompatActivity {
+
+    FloatingActionButton AddImageBtn;
+
 
     // Creating DatabaseReference.
     DatabaseReference databaseReference;
@@ -40,6 +46,7 @@ public class DisplayImagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_images);
 
+        AddImageBtn = findViewById(R.id.add_img);
         // Assign id to RecyclerView.
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
@@ -102,5 +109,13 @@ public class DisplayImagesActivity extends AppCompatActivity {
             }
         });
 
+        AddImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DisplayImagesActivity.this,Add_post.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 }

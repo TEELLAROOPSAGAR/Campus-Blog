@@ -60,7 +60,7 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
     Uri FilePathUri;
     Bitmap bitmap;
     StorageReference storageReference;
-    User user = new User();
+
     String uu="";
 
     @Override
@@ -97,8 +97,9 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
                 startActivity(new Intent(this,MainActivity.class));
                 break;
             case R.id.btnSignUp:
-                CheckUserDetails();
                 UploadImageFileToFirebaseStorage(bitmap);
+                CheckUserDetails();
+
                 break;
 
         }
@@ -196,13 +197,13 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
+                            User user = new User();
                             user.setEmail(email);
                             user.setName(name);
                             user.setUsername(username);
                             user.setBranch(branch);
                             user.setProfileThumbUrl(uu);
-
+                            Log.v("uu",uu);
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -317,8 +318,8 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
                     public void onSuccess(Uri uri) {
                         String imageUrl = uri.toString();
                         uu = imageUrl;
-                        Log.v("pimg",imageUrl);
-                        user.setProfileThumbUrl(imageUrl);
+                        Log.v("pimg",uu);
+//                        user.setProfileThumbUrl(imageUrl);
                         //createNewPost(imageUrl);
 //                        String ImageUploadId = databaseReference.push().getKey();
 //                        ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, imageUrl);
