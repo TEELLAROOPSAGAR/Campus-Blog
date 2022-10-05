@@ -119,7 +119,7 @@ public class MyProfile extends AppCompatActivity {
                 email.setText("email    : "+user.getEmail());
 //                MyProfileImg.setImageBitmap(getBitmapFromURL(user.getProfileThumbUrl()));
                 //It's working but image is loading too slow.
-                Picasso.get().load(user.getProfileThumbUrl()).into(MyProfileImg);
+//                Picasso.get().load(user.getProfileThumbUrl()).into(MyProfileImg);
                 Log.v("profileimage",user.getProfileThumbUrl());
             }
 

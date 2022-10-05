@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.core.widget.NestedScrollView
-
-
+<LinearLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +9,6 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:orientation="vertical"
-
     >
 
     <LinearLayout
@@ -59,7 +56,7 @@
 
 
                 <EditText
-                    android:id="@+id/post_msg"
+                    android:id="@+id/post_des"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginStart="10dp"
@@ -76,12 +73,11 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/post_image_path"
+                        android:id="@+id/post_img"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:layout_marginStart="10dp"
@@ -98,7 +94,7 @@
                         android:textColorHint="@color/grey_60" />
 
                     <Button
-                        android:id="@+id/post_image"
+                        android:id="@+id/choose_image"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="10dp"
@@ -112,8 +108,9 @@
                         android:text="choose Image" />
                 </LinearLayout>
 
+
                 <Button
-                    android:id="@+id/btn_submit"
+                    android:id="@+id/upload"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -124,8 +121,16 @@
                     android:drawablePadding="10dp"
                     android:ems="10"
                     android:padding="10dp"
-                    android:text="Submit"
+                    android:text="Upload"
                     android:textColor="@color/grey_90" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="horizontal"
+
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
 
@@ -153,4 +158,4 @@
         </RelativeLayout>
 
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>

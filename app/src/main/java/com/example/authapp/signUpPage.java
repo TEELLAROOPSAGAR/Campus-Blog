@@ -43,6 +43,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,6 +60,8 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
     int Image_Request_Code = 1;
     Uri FilePathUri;
     Bitmap bitmap;
+    byte[] fileInBytes;
+
     StorageReference storageReference;
 
     String uu="";
@@ -97,7 +100,7 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
                 startActivity(new Intent(this,MainActivity.class));
                 break;
             case R.id.btnSignUp:
-                UploadImageFileToFirebaseStorage(bitmap);
+                UploadImageFileToFirebaseStorage(fileInBytes);
                 CheckUserDetails();
 
                 break;
@@ -279,7 +282,9 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
 
                 // Getting selected image into Bitmap.
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), FilePathUri);
-
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
+                fileInBytes = baos.toByteArray();
                 // Setting up bitmap selected image into ImageView.
                 profileImage.setImageBitmap(bitmap);
 
@@ -304,11 +309,11 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
 
     }
 
-    public void UploadImageFileToFirebaseStorage(Bitmap bitmap){
+    public void UploadImageFileToFirebaseStorage(byte[] fileInBytes){
 
 
         StorageReference storageReference2nd = storageReference.child("Profile_Pics/" + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
-        storageReference2nd.putFile(FilePathUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        storageReference2nd.putBytes(fileInBytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();

@@ -53,7 +53,7 @@ public class Add_post extends AppCompatActivity {
     ImageView SelectImage;
      private FirebaseAuth mAuth;
     // Creating URI.
-    Uri FilePathUri;
+    public static Uri FilePathUri;
 
     // Creating StorageReference and DatabaseReference object.
     StorageReference storageReference;
@@ -113,8 +113,8 @@ public class Add_post extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Calling method to upload selected image on Firebase storage.
-                UploadImageFileToFirebaseStorage(bitmap);
-
+//                UploadImageFileToFirebaseStorage(bitmap);
+                startActivity(new Intent(Add_post.this, Add_blog.class));
             }
         });
 
@@ -137,6 +137,7 @@ public class Add_post extends AppCompatActivity {
         if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             FilePathUri = data.getData();
+            Log.v("uri", FilePathUri.toString());
 
             try {
 
@@ -205,6 +206,7 @@ public class Add_post extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String imageUrl = uri.toString();
+
                                     //createNewPost(imageUrl);
                                     String ImageUploadId = databaseReference.push().getKey();
                                     ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, imageUrl);

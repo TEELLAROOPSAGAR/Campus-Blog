@@ -56,4 +56,12 @@
         android:layout_below="@+id/ButtonUploadImage"
         android:text="Show All Uploaded Images"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/DisplayImagesButton"
+        android:layout_marginTop="5dp" />
+
+
 </RelativeLayout>
