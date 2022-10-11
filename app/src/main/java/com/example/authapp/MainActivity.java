@@ -1,8 +1,5 @@
 package com.example.authapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +10,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -92,8 +92,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                    this sends a email to user to verify
 //                    if(user.isEmailVerified()) {
-                       startActivity(new Intent(MainActivity.this, Add_post.class));
+                    Intent i = new Intent(MainActivity.this, HomeScreen.class);
+                    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                       startActivity(i);
 //                    }else{
 //                        user.sendEmailVerification();
 //                        Toast.makeText(MainActivity.this,"Please,verify your email",Toast.LENGTH_LONG).show();

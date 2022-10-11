@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="app_color">#308FDC</color>
     <color name="ncolr">#272727</color>
+
+    <color name="grey_60">#666666</color>
+    <color name="grey_80">#37474F</color>
+    <color name="grey_90">#263238</color>
+    <color name="colorBackground">#FFFFFF</color>
+
+    <color name="colorPrimaryDark">#0940a6</color>
 </resources>

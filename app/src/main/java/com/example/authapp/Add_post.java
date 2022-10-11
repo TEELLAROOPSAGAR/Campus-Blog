@@ -1,12 +1,12 @@
 package com.example.authapp;
+
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -16,11 +16,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -32,7 +29,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class Add_post extends AppCompatActivity {
@@ -53,7 +49,7 @@ public class Add_post extends AppCompatActivity {
     ImageView SelectImage;
      private FirebaseAuth mAuth;
     // Creating URI.
-    Uri FilePathUri;
+    public static Uri FilePathUri;
 
     // Creating StorageReference and DatabaseReference object.
     StorageReference storageReference;
@@ -113,8 +109,8 @@ public class Add_post extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Calling method to upload selected image on Firebase storage.
-                UploadImageFileToFirebaseStorage(bitmap);
-
+//                UploadImageFileToFirebaseStorage(bitmap);
+                startActivity(new Intent(Add_post.this, Add_blog.class));
             }
         });
 
@@ -137,6 +133,7 @@ public class Add_post extends AppCompatActivity {
         if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             FilePathUri = data.getData();
+            Log.v("uri", FilePathUri.toString());
 
             try {
 
@@ -205,12 +202,14 @@ public class Add_post extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String imageUrl = uri.toString();
+
                                     //createNewPost(imageUrl);
                                     String ImageUploadId = databaseReference.push().getKey();
                                     ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, imageUrl);
 
 
                                     databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+
                                 }
                             });
 

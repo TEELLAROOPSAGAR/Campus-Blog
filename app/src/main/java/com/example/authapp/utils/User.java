@@ -1,6 +1,8 @@
 package com.example.authapp.utils;
 
 
+import android.util.Log;
+
 public class User {
 
     public String name,age,email;
@@ -16,6 +18,7 @@ public class User {
 
     public void setProfileThumbUrl(String profileThumbUrl) {
         this.profileThumbUrl = profileThumbUrl;
+        Log.v("pthumburi",profileThumbUrl);
     }
 
     public String getName() {
