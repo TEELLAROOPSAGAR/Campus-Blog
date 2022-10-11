@@ -61,7 +61,7 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
     Bitmap bitmap;
     StorageReference storageReference;
     User user = new User();
-    String uu="";
+    String uu = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +85,11 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onClick(View view) {
                 selectImg(view);
-
             }
         });
         storageReference = FirebaseStorage.getInstance().getReference();
     }
+
     @Override
     public void onClick(View v){
         switch(v.getId()){
@@ -97,10 +97,9 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
                 startActivity(new Intent(this,MainActivity.class));
                 break;
             case R.id.btnSignUp:
-                CheckUserDetails();
                 UploadImageFileToFirebaseStorage(bitmap);
+                CheckUserDetails();
                 break;
-
         }
     }
 
@@ -189,14 +188,11 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
             return;
         }
 
-
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             user.setEmail(email);
                             user.setName(name);
                             user.setUsername(username);
@@ -295,7 +291,6 @@ public class signUpPage extends AppCompatActivity implements View.OnClickListene
     public String GetFileExtension(Uri uri) {
 
         ContentResolver contentResolver = getContentResolver();
-
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
 
         // Returning the file Extension.
