@@ -2,11 +2,15 @@ package com.example.authapp;
 
 import java.util.ArrayList;
 
-public class PostUploadInfo {
+public class postUploadInfo {
+
     public String title;
+    public String uid;
     public String thumbUrl="";
     public ArrayList<String> imageURLs = new ArrayList<>();
     public String description;
+
+    public postUploadInfo(){}
 
     public String getTitle() {
         return title;
@@ -39,4 +43,13 @@ public class PostUploadInfo {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
 }

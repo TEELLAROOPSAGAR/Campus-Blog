@@ -1,15 +1,13 @@
 package com.example.authapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.authapp.utils.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -119,7 +117,7 @@ public class MyProfile extends AppCompatActivity {
                 email.setText("email    : "+user.getEmail());
 //                MyProfileImg.setImageBitmap(getBitmapFromURL(user.getProfileThumbUrl()));
                 //It's working but image is loading too slow.
-//                Picasso.get().load(user.getProfileThumbUrl()).into(MyProfileImg);
+                Picasso.get().load(user.getProfileThumbUrl()).into(MyProfileImg);
                 Log.v("profileimage",user.getProfileThumbUrl());
             }
 

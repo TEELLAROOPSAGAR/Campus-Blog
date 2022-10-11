@@ -66,7 +66,7 @@
                     android:drawableStart="@drawable/ic_title"
                     android:drawablePadding="12dp"
                     android:ems="10"
-                    android:hint="Post Title"
+                    android:hint="Post Description"
                     android:padding="10dp"
                     android:textColor="@color/grey_90"
                     android:textColorHint="@color/grey_60" />
