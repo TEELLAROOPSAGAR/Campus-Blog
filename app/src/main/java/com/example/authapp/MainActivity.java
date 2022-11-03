@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    if(user.isEmailVerified()) {
                     Intent i = new Intent(MainActivity.this, HomeScreen.class);
                     i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                       startActivity(i);
+                         startActivity(i);
 //                    }else{
 //                        user.sendEmailVerification();
 //                        Toast.makeText(MainActivity.this,"Please,verify your email",Toast.LENGTH_LONG).show();
@@ -107,5 +107,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 progressbar.setVisibility(View.INVISIBLE);
             }
         });
+    }
+    @Override
+    public void onBackPressed(){
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }

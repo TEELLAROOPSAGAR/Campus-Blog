@@ -71,33 +71,32 @@
                     android:textColor="@color/grey_90"
                     android:textColorHint="@color/grey_60" />
 
+
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list"
+                        app:layout_constraintDimensionRatio="H,1:10"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:scrollbars="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="25dp"
                     android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/post_img"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="7"
-                        android:background="@drawable/bg_corner"
-                        android:drawableStart="@drawable/ic_title"
-                        android:drawablePadding="12dp"
-                        android:ems="10"
-                        android:hint="Post Image"
-                        android:padding="10dp"
-                        android:textColor="@color/grey_90"
-                        android:textColorHint="@color/grey_60" />
 
                     <Button
                         android:id="@+id/choose_image"
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="3"
@@ -105,32 +104,27 @@
                         android:drawablePadding="10dp"
                         android:ems="10"
                         android:padding="10dp"
-                        android:text="choose Image" />
+                        android:text="choose Image"
+                        android:textColor="@color/grey_90" />
+
+
+                    <Button
+                        android:id="@+id/upload"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/bg_corner"
+                        android:drawablePadding="10dp"
+                        android:ems="10"
+                        android:padding="10dp"
+                        android:text="Upload"
+                        android:textColor="@color/grey_90" />
+
+
                 </LinearLayout>
-
-
-                <Button
-                    android:id="@+id/upload"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/bg_corner"
-                    android:drawablePadding="10dp"
-                    android:ems="10"
-                    android:padding="10dp"
-                    android:text="Upload"
-                    android:textColor="@color/grey_90" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="horizontal"
-
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
 
@@ -141,7 +135,19 @@
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_vertical"
                 android:paddingBottom="70dp"
-                android:visibility="gone" />
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/text_progress"
+                android:layout_width="wrap_content"
+                android:layout_alignBottom="@+id/progress_loading"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="0.0%"
+                android:textSize="20dp"/>
+
+
 
             <LinearLayout
                 android:id="@+id/lyt_failed"

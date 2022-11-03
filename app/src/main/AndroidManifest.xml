@@ -19,25 +19,22 @@
         android:theme="@style/Theme.Authapp"
         tools:targetApi="31">
         <activity
-            android:name=".HomeScreen"
+            android:name=".UpdateProfile"
             android:exported="false" />
         <activity
-            android:name=".yetToPostMedia"
+            android:name=".FullScreen"
+            android:exported="false" />
+        <activity
+            android:name=".ImageView"
+            android:exported="false" />
+        <activity
+            android:name=".postDelete"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Add_blog"
-            android:exported="false" />
-        <activity
-            android:name=".DisplayImagesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Add_post"
-            android:exported="false" />
-        <activity
-            android:name=".preSignUpPage"
-            android:exported="false" />
-        <activity
-            android:name=".Others_Profile_Page"
             android:exported="false" />
         <activity
             android:name=".MyProfile"
@@ -46,14 +43,10 @@
             android:name=".forgot_password"
             android:exported="false" />
         <activity
-            android:name=".SearchPage"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".signUpPage"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".HomeScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

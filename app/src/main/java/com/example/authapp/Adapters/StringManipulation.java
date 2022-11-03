@@ -1,6 +1,5 @@
-package com.example.authapp.utils;
+package com.example.authapp.Adapters;
 
-import java.util.Locale;
 public class StringManipulation {
     public static String expandUserName(String username){
         return username.replace(".","");

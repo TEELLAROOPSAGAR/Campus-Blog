@@ -1,14 +1,46 @@
-package com.example.authapp;
+package com.example.authapp.classes;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-public class postUploadInfo {
+public class postUploadInfo extends com.example.authapp.classes.BlogPostId {
 
     public String title;
     public String uid;
-    public String thumbUrl="";
+    public String thumbUrl;
     public ArrayList<String> imageURLs = new ArrayList<>();
     public String description;
+    public Date timeStamp;
+
+//    public String getPostLikesCount() {
+//        return postLikesCount;
+//    }
+//
+//    public void setPostLikesCount(String postLikesCount) {
+//        this.postLikesCount = postLikesCount;
+//    }
+//
+//    public String postLikesCount;
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String userName;
 
     public postUploadInfo(){}
 
