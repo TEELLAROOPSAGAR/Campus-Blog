@@ -3,7 +3,7 @@ package com.example.authapp.classes;
 
 import android.util.Log;
 
-public class User {
+public class User extends com.example.authapp.classes.GetUserId {
 
     public String name,email;
     public String branch;

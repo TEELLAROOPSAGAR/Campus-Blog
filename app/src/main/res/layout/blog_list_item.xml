@@ -8,19 +8,18 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="6dp"
-        android:layout_margin="2dp"
-        android:layout_gravity="center">
+        app:cardCornerRadius="1dp"
+        android:layout_marginBottom="6dp"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
             android:orientation="vertical"
             android:layout_gravity="center">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -39,6 +38,7 @@
                     <TextView
                         android:id="@+id/blog_user_name"
                         android:layout_width="wrap_content"
+                        android:textColor="#1B1A1A"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="20dp"
@@ -58,7 +58,8 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:visibility="invisible"
-                        android:layout_marginStart="270sp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginStart="240sp"
                         android:layout_marginTop="-40dp"
                         app:srcCompat="@mipmap/action_delete" />
                 </LinearLayout>
@@ -66,35 +67,39 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/blog_image"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_margin="5dp"
-                android:nestedScrollingEnabled="false"
-                app:layout_collapseMode="parallax"
-                android:scaleType="fitXY"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:src="@drawable/image_placeholder"/>
-
 
             <TextView
                 android:id="@+id/blog_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:textStyle="bold"
+                android:textColor="#1B1A1A"
+                android:autoSizeMinTextSize="13sp"
+                android:autoSizeMaxTextSize="100sp"
                 android:layout_marginLeft="12dp"
                 android:textSize="20sp"
-                android:layout_margin="1dp"
                 android:text="sample_title"/>
+
+            <ImageView
+                android:id="@+id/blog_image"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:layout_marginTop="7dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="7dp"
+                android:nestedScrollingEnabled="false"
+
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:src="@drawable/image_placeholder"/>
 
             <TextView
                 android:id="@+id/blog_desc"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_margin="1dp"
-                android:layout_marginEnd="2dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="#353434"
+                android:textSize="17dp"
+                android:layout_marginRight="16dp"
                 android:text="Lorem ipsum dolor sit amet, soluta regione urbanitas vis in, qui elit populo ut. " />
 
             <LinearLayout
@@ -148,12 +153,24 @@
                     <TextView
                         android:id="@+id/comments_count"
                         android:layout_width="wrap_content"
-                        android:gravity="right"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="10dp"
                         android:text="0 Comments"/>
+
+                    <ImageView
+                        android:visibility="invisible"
+                        android:id="@+id/share_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/icon_share" />
+
+
                 </LinearLayout>
             </LinearLayout>
 

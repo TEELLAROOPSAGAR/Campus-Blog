@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,10 +26,12 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -45,7 +48,7 @@ public class HomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         recyclerView = findViewById(R.id.All_posts);
         AddPostBtn = findViewById(R.id.add_img);
         mAuth = FirebaseAuth.getInstance();
@@ -79,7 +82,7 @@ public class HomeScreen extends AppCompatActivity {
         blogRecyclerAdapter = new BlogRecyclerAdapter(blog_list, HomeScreen.this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+//        if(mAuth.getCurrentUser() != null) {
 //        Query query = FirebaseFirestore.getInstance()
 //                .collection("Blogs")
 ////                .orderBy("timestamp")
@@ -90,10 +93,14 @@ public class HomeScreen extends AppCompatActivity {
 //
 //            }
 //        });
+//        }
 
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
 
         if(mAuth.getCurrentUser() != null) {
-            firebaseFirestore.collection("Blogs").orderBy("timeStamp", Query.Direction.DESCENDING)
+            firebaseFirestore.collection("BlogsDUP")
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
@@ -104,7 +111,7 @@ public class HomeScreen extends AppCompatActivity {
 
                                         Log.v("blogIDH",blogPostId);
                                         postUploadInfo blogPost = doc.getDocument().toObject(postUploadInfo.class).withId(blogPostId);
-                                        blog_list.add(blogPost);
+                                        blog_list.add(0,blogPost);
 
                                 /*if(isFirstPageFirstLoad) {
                                     blog_list.add(blogPost);
@@ -120,7 +127,7 @@ public class HomeScreen extends AppCompatActivity {
                                 //isFirstPageFirstLoad=false;
 
                             } catch (Exception ex) {
-
+                                    Toast.makeText(HomeScreen.this,"Loading error please refresh\n or start again",Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -185,16 +192,19 @@ public class HomeScreen extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+            case  R.id.action_search:
+                Intent act1 = new Intent(HomeScreen.this, SearchPage.class);
+                startActivity(act1);
+                return true;
             case R.id.action_logout_btn:
                 logOut();
                 return true;
-
             case R.id.action_view_profile:
-
                 Intent intent = new Intent(HomeScreen.this, MyProfile.class);
                 intent.putExtra("User_id",FirebaseAuth.getInstance().getCurrentUser().getUid());
                 startActivity(intent);
                 return true;
+
 
             default:
                 return false;
@@ -203,6 +213,8 @@ public class HomeScreen extends AppCompatActivity {
         }
 
     }
+
+
 
     private void logOut() {
         mAuth.signOut();

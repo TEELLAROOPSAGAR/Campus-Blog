@@ -6,52 +6,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="5dp"
     app:cardCornerRadius="8dp"
-    android:layout_margin="5dp">
-
+    android:layout_margin="2dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/Search_user_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/profile_placeholder" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:orientation="vertical">
 
-        <View
-            android:layout_below="@+id/txtVWelcome"
-            android:layout_margin="1dp"
-            android:backgroundTint="#308FDC"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
         <TextView
             android:id="@+id/txtVName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
             android:layout_marginTop="10dp"
-            android:text="Name   : "
-            android:textSize="15sp"
+            android:hint="Name"
+            android:textSize="20sp"
             android:textStyle="bold" />
+
         <TextView
-            android:id="@+id/txtVCollege"
+            android:id="@+id/txtVBranch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txtVUserName"
-            android:layout_marginTop="10sp"
-            android:layout_marginStart="10sp"
-            android:layout_marginEnd="10sp"
-            android:layout_marginBottom="10sp"
-            android:text="College  :"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/txtVAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/txtVUserName"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="0sp"
-            android:layout_marginRight="10dp"
-            android:text="Age  : "
-            android:textSize="15sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginTop="10dp"
+            android:hint="branch"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
 
@@ -65,51 +58,8 @@
             android:layout_marginTop="10sp"
             android:layout_marginEnd="10sp"
             android:layout_marginBottom="10sp"
-            android:text="UserName : "
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-
-
-
-
-        <TextView
-            android:id="@+id/txtVBranch"
-            android:layout_margin="10sp"
-            android:layout_below="@+id/txtVCollege"
-            android:textStyle="bold"
-            android:text="Branch   :"
-            android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-        <TextView
-            android:id="@+id/txtVEmailAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txtVBranch"
-            android:layout_margin="10sp"
-            android:layout_marginStart="10sp"
-            android:layout_marginTop="10sp"
-            android:layout_marginEnd="10sp"
-            android:layout_marginBottom="10sp"
-            android:text="Email    :"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtVPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txtVEmailAddress"
-            android:layout_margin="10sp"
-            android:layout_marginStart="80sp"
-            android:layout_marginTop="80sp"
-            android:layout_marginEnd="80sp"
-            android:layout_marginBottom="80sp"
-            android:text="Phone : "
-            android:textSize="15sp"
+            android:hint="username"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <View
@@ -121,9 +71,11 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:backgroundTint="#308FDC" />
-
-
     </LinearLayout>
+    </LinearLayout>
+
+
+
 
 
 </androidx.cardview.widget.CardView>

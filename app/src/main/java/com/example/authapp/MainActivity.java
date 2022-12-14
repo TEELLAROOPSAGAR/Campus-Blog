@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             txtEMail.requestFocus();
             return;
         }
+        if(!email.endsWith("iitism.ac.in")){
+            txtEMail.setError("Enter your Institute email Id");
+            txtEMail.requestFocus();
+            return;
+        }
         if(password.isEmpty()){
             txtEPassword.setError("password can't be empty");
             txtEMail.requestFocus();
@@ -93,14 +98,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(task.isSuccessful()){
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //                    this sends a email to user to verify
-//                    if(user.isEmailVerified()) {
+                    if(user.isEmailVerified()) {
                     Intent i = new Intent(MainActivity.this, HomeScreen.class);
                     i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                          startActivity(i);
-//                    }else{
-//                        user.sendEmailVerification();
-//                        Toast.makeText(MainActivity.this,"Please,verify your email",Toast.LENGTH_LONG).show();
-//                    }
+                    }else{
+                        user.sendEmailVerification();
+                        Toast.makeText(MainActivity.this,"An email is sent please verify if not found check in your spam mails",Toast.LENGTH_LONG).show();
+                    }
                 }else{
                     Toast.makeText(MainActivity.this,"Failed to login! Please check your credentials",Toast.LENGTH_LONG).show();
                 }

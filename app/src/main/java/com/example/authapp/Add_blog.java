@@ -3,9 +3,11 @@ package com.example.authapp;
 import static com.karumi.dexter.Dexter.withActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.authapp.Adapters.MediaAdapter;
+import com.example.authapp.classes.ImageModifier;
 import com.example.authapp.classes.User;
 import com.example.authapp.classes.postUploadInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,16 +52,26 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+
+import id.zelory.compressor.Compressor;
+
 public class Add_blog extends AppCompatActivity {
 
     int PICK_IMAGE_INTENT = 1;
-    ArrayList<String> mediaUriList = new ArrayList<>();
+    ArrayList<Uri> mediaUriList = new ArrayList<>();
     ArrayList<String> mediaUrlList = new ArrayList<>();
+    ArrayList<Bitmap> mediaBitmapList = new ArrayList<>();
+    File newImageFile;
+    File file;
+    private FrameLayout progressBarContainer;
     private EditText post_title,post_des;
     private Button  upload,choose_image;
     private TextView text_progress;
@@ -75,7 +89,7 @@ public class Add_blog extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_blog);
-
+        progressBarContainer = findViewById(R.id.progressBarContainer);
         progress_loading = (ProgressBar)findViewById(R.id.progress_loading);
         text_progress = (TextView)findViewById(R.id.text_progress);
         post_title = (EditText) findViewById(R.id.post_title);
@@ -84,13 +98,14 @@ public class Add_blog extends AppCompatActivity {
         choose_image = (Button) findViewById(R.id.choose_image);
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        blogDB = FirebaseDatabase.getInstance().getReference("Blogs");
+        blogDB = FirebaseDatabase.getInstance().getReference("BlogsDUP");
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         choose_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openGallery();
+                mediaBitmapList.clear();
                 mediaUriList.clear();
 
             }
@@ -101,33 +116,35 @@ public class Add_blog extends AppCompatActivity {
             public void onClick(View view) {
                 if(checkPost()){ //complete the function checkpost
 
-                    progress_loading.setVisibility(View.VISIBLE);
-//                    text_progress.setVisibility(View.VISIBLE);
+                    progressBarContainer.setVisibility(View.VISIBLE);
 
-                    post_des.setEnabled(false);
-                    post_title.setEnabled(false);
-                    upload.setEnabled(false);
-                    choose_image.setEnabled(false);
-
-                        String tmpUri = mediaUriList.get(0);
+//                        String tmpUri = mediaUriList.get(0).getPath().toString();
+//                        Log.v("ImageUri",tmpUri);
                         storageReference = FirebaseStorage.getInstance().getReference();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
                         String str = sdf.format(new Date());
-                        StorageReference rf = storageReference.child("Blog_Images/" + str + ".jpg");
+                        StorageReference rf = storageReference.child("Blog_ImagesDUP/" + str + ".jpg");
                         Bitmap bitmap = null;
                         byte[] fileInBytes = null;
-                        try {
-                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(tmpUri));
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
-                            fileInBytes = baos.toByteArray();
+                    bitmap = mediaBitmapList.get(0);
+                    try {
+                        bitmap = new Compressor(Add_blog.this)
+                                     .setMaxHeight(200)
+                                     .setMaxWidth(200)
+                                     .setQuality(100)
+                                     .compressToBitmap(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+//                                Log.v("bitmap",bitmap.toString());
+//                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mediaUriList.get(0));
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    fileInBytes = baos.toByteArray();
 
 
-                        rf.putBytes(fileInBytes).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    rf.putBytes(fileInBytes).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                                 if(task.isSuccessful()){
@@ -135,8 +152,7 @@ public class Add_blog extends AppCompatActivity {
                                         rf.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
                                             public void onSuccess(Uri uri) {
-                                                progress_loading.setVisibility(View.INVISIBLE);
-//                                                text_progress.setVisibility(View.INVISIBLE);
+                                                progressBarContainer.setVisibility(View.INVISIBLE);
                                                 mediaUrlList.add(uri.toString());
                                                 Log.v("post",uri.toString());
                                                 String uid = auth.getCurrentUser().getUid();
@@ -149,8 +165,8 @@ public class Add_blog extends AppCompatActivity {
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(Add_blog.this);
 
                                                         builder.setTitle("Confirm");
-                                                        builder.setMessage("Are you sure once upload\n it can't be edited ?");
-                                                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                                        builder.setMessage("Once uploaded it can't be edited");
+                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                                                             public void onClick(DialogInterface dialog, int which) {
                                                                 // Do nothing but close the dialog
@@ -163,23 +179,28 @@ public class Add_blog extends AppCompatActivity {
                                                                 postUploadInfo.setThumbUrl(user.getProfileThumbUrl());
 //                                                                postUploadInfo.setPostLikesCount("0");
                                                                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                                                                Date date = new Date();
+//                                                                Date date = new Date();
+//                                                                Date date = dateFormat.getCalendar().getTime();
+                                                                 Calendar calendar = Calendar.getInstance();
+                                                                SimpleDateFormat simpledateformat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                                                String date_str  = simpledateformat.format(calendar.getTime());
+                                                                Date date = null;
+                                                                try {
+                                                                    date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(date_str);
+                                                                } catch (ParseException e) {
+                                                                    e.printStackTrace();
+                                                                }
+//                                                                dateFormat.format(date);
                                                                 postUploadInfo.setTimeStamp(date);
 //                                                        Log.v("testpr",user.getProfileThumbUrl());
                                                                 //Log.v("post", postUploadInfo.title+" "+postUploadInfo.description + " " + postUploadInfo.getThumbUrl() + " " + postUploadInfo.imageURLs.get(0));
                                                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
                                                                 String str = sdf.format(new Date());
-//                    blogDB.child(auth.getCurrentUser().getUid())
-//                            .child(str).setValue(postUploadInfo);
-                                                                firebaseFirestore.collection("Blogs").document(str).set(postUploadInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                                                firebaseFirestore.collection("BlogsDUP").document(str).set(postUploadInfo)
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                                        post_des.setEnabled(true);
-                                                                        post_title.setEnabled(true);
-                                                                        upload.setEnabled(true);
-                                                                        choose_image.setEnabled(true);
-
-
                                                                         if(task.isSuccessful()){
                                                                                       startActivity(new Intent(Add_blog.this,HomeScreen.class));
                                                                                       finish();
@@ -194,7 +215,7 @@ public class Add_blog extends AppCompatActivity {
                                                             }
                                                         });
 
-                                                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int which) {
@@ -241,7 +262,7 @@ public class Add_blog extends AppCompatActivity {
             post_des.requestFocus();
             return false;
         }
-        if(mediaUriList.isEmpty()){
+        if(mediaBitmapList.isEmpty()){
             Toast.makeText(this, "Please select an Image", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -250,11 +271,11 @@ public class Add_blog extends AppCompatActivity {
 
     private void initializeMedia() {
         list = findViewById(R.id.list);
-        mediaUriList = new ArrayList<>();
+        mediaBitmapList = new ArrayList<>();
         GridLayoutManager linearLayoutManager = new GridLayoutManager(this, 1);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         list.setLayoutManager(linearLayoutManager);
-        mediaAdapter = new MediaAdapter(Add_blog.this,mediaUriList);
+        mediaAdapter = new MediaAdapter(Add_blog.this,mediaBitmapList);
         list.setAdapter(mediaAdapter);
     }
     private void openGallery() {
@@ -287,28 +308,64 @@ public class Add_blog extends AppCompatActivity {
                 }).check();
     }
 
+    public String getImagePath(Uri uri){
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == PICK_IMAGE_INTENT){
                 if(data.getClipData() == null){
-                    mediaUriList.add(data.getData().toString());
+                    mediaUriList.add(data.getData());
 //                    Log.v("medialistsize", mediaUriList.size() + "");
                 }else{
                     for(int i = 0; i < data.getClipData().getItemCount(); i++){
-                        mediaUriList.add(data.getClipData().getItemAt(i).getUri().toString());
+                        Uri dummy_uri = data.getClipData().getItemAt(i).getUri();
+                        try {
+
+                            // Getting selected image into Bitmap.
+                             file = new File(getImagePath(dummy_uri));
+                            Bitmap bitmap_dup = new Compressor(Add_blog.this)
+                                    .setMaxHeight(200)
+                                    .setMaxWidth(200)
+                                    .setQuality(100)
+                                    .compressToBitmap(file);
+//                            Bitmap bitmap_dup = MediaStore.Images.Media.getBitmap(getContentResolver(), dummy_uri);
+                            ImageModifier imageModifier = new ImageModifier();
+                            mediaBitmapList.add(imageModifier.modifyOrientation(bitmap_dup,file.getAbsolutePath()));
+                            // Setting up bitmap selected image into ImageView.
+
+                            // After selecting image change choose button above text.
+
+                        } catch (IOException e) {
+
+                            e.printStackTrace();
+                        }
+                        newImageFile = new File(data.getClipData().getItemAt(i).getUri().getPath());
+                        Log.v("ImagePath",newImageFile.toString());
                     }
                 }
                 mediaAdapter.notifyDataSetChanged();
             }
         }
     }
-    @Override
-    public void onBackPressed(){
-        Intent a = new Intent(Add_blog.this,HomeScreen.class);
-        startActivity(a);
-    }
+
     public String GetFileExtension(Uri uri) {
 
         ContentResolver contentResolver = getContentResolver();

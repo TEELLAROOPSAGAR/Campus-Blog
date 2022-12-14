@@ -1,8 +1,13 @@
 package com.example.authapp;
 
 import android.Manifest;
-import android.content.ContentResolver;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +15,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -18,8 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.example.authapp.classes.ImageModifier;
 import com.example.authapp.classes.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,9 +46,13 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class signUpPage extends AppCompatActivity  {
 
@@ -49,7 +61,9 @@ public class signUpPage extends AppCompatActivity  {
     private TextView go_to_login;
     private Button btnSignUp;
     private ProgressBar progress_signUp;
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     private CircleImageView profileImage;
+    private String mImageFileLocation;
     public boolean check = false;
     int Image_Request_Code = 1;
     Uri FilePathUri;
@@ -102,8 +116,13 @@ public class signUpPage extends AppCompatActivity  {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectImg(view);
+                if(checkAndRequestPermissions(signUpPage.this)){
+//                    pickImage(signUpPage.this);
+                    selectImg(view);
+                }
+//
             }
+
         });
         storageReference = FirebaseStorage.getInstance().getReference();
     }
@@ -137,6 +156,11 @@ public class signUpPage extends AppCompatActivity  {
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             txtEEmail.setError("Enter a valid email Address");
+            txtEEmail.requestFocus();
+            return false;
+        }
+        if(!email.endsWith("iitism.ac.in")){
+            txtEEmail.setError("Enter your Institute email Id");
             txtEEmail.requestFocus();
             return false;
         }
@@ -219,52 +243,158 @@ public class signUpPage extends AppCompatActivity  {
 //        Intent a = new Intent(signUpPage.this,MainActivity.class);
 //        startActivity(a);
 //    }
+
+    public static boolean checkAndRequestPermissions(final Activity context) {
+        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int cameraPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.CAMERA);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded
+                    .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(context, listPermissionsNeeded
+                            .toArray(new String[listPermissionsNeeded.size()]),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+    public String getImagePath(Uri uri){
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+        System.out.println(path);
+
+
+        return path;
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+
+        // can post image
+        String [] proj={MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery( contentUri,
+                proj, // Which columns to return
+                null,       // WHERE clause; which rows to return (all rows)
+                null,       // WHERE clause selection arguments (none)
+                null); // Order-by clause (ascending by name)
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+
+        return cursor.getString(column_index);
+    }
+    private void pickImage(Context context) {
+        final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery"}; // create a menuOption Array
+        // create a dialog for showing the optionsMenu
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // set the items in builder
+        builder.setItems(optionsMenu, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (optionsMenu[i].equals("Take Photo")) {
+                    // Open the camera and get the photo
+//                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                    startActivityForResult(takePicture, 0);
+                    Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent1, 0);
+                } else if (optionsMenu[i].equals("Choose from Gallery")) {
+                    // choose from  external storage
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, 1);
+                }
+            }
+        });
+        builder.show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         check = false;
         super.onActivityResult(requestCode, resultCode, data);
-        Log.v("rcode",requestCode+"");
-        if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        Log.v("rcode", requestCode + "");
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+//
+                        bitmap = (Bitmap) data.getExtras().get("data");
+//                        FilePathUri = getImageUri(getApplicationContext(),bitmap);
+                        FilePathUri = data.getData();
+                        Log.v("fileuRI",FilePathUri.toString());
+                        try {
 
-            FilePathUri = data.getData();
+                            // Getting selected image into Bitmap.
+                            File file = new File(getRealPathFromURI(FilePathUri));
+                            Bitmap bitmap_dup = MediaStore.Images.Media.getBitmap(getContentResolver(), FilePathUri);
+                            ImageModifier imageModifier = new ImageModifier();
+                            bitmap = imageModifier.modifyOrientation(bitmap_dup,file.getAbsolutePath());
+                            // Setting up bitmap selected image into ImageView.
+                            profileImage.setImageBitmap(bitmap);
+                            check = true;
+                            // After selecting image change choose button above text.
 
-            try {
+                        } catch (IOException e) {
 
-                // Getting selected image into Bitmap.
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), FilePathUri);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
-                fileInBytes = baos.toByteArray();
-                // Setting up bitmap selected image into ImageView.
-                profileImage.setImageBitmap(bitmap);
-               check = true;
-                // After selecting image change choose button above text.
+                            e.printStackTrace();
+                        }
 
-            }
-            catch (IOException e) {
+                    }
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+//
+                        FilePathUri = data.getData();
 
-                e.printStackTrace();
+                        try {
+
+                            // Getting selected image into Bitmap.
+                            File file = new File(getRealPathFromURI(FilePathUri));
+                            System.out.println(FilePathUri);
+                            Bitmap bitmap_dup = MediaStore.Images.Media.getBitmap(getContentResolver(), FilePathUri);
+                            ImageModifier imageModifier = new ImageModifier();
+                            bitmap = imageModifier.modifyOrientation(bitmap_dup,file.getAbsolutePath());
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                            fileInBytes = baos.toByteArray();
+                            // Setting up bitmap selected image into ImageView.
+                            profileImage.setImageBitmap(bitmap);
+                            check = true;
+                            // After selecting image change choose button above text.
+
+                        } catch (IOException e) {
+
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
             }
         }
     }
 
-    public String GetFileExtension(Uri uri) {
-
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-
-        // Returning the file Extension.
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
-
-    }
-
-
-
         public void UploadImageFileToFirebaseStorage ( byte[] fileInBytes) {
+            if(FilePathUri==null){
+                Toast.makeText(signUpPage.this,"please set a profile photo to continue",Toast.LENGTH_SHORT).show();
+                return;
+            }
+
 
             progress_signUp.setVisibility(View.VISIBLE);
-
-            StorageReference storageReference2nd = storageReference.child("Profile_Pics /" + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+            StorageReference storageReference2nd = storageReference.child("Profile_Pics /" + System.currentTimeMillis() + ".jpg");
 
             storageReference2nd.putBytes(fileInBytes).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override

@@ -1,5 +1,4 @@
-wq
-    iii<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,76 +7,78 @@ wq
     tools:context=".MyProfile">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/MyProfileImg"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/MyProfileImg"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:src="@drawable/profiledummy" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="22dp"
+            android:orientation="vertical">
 
-        android:src="@drawable/profiledummy" />
+            <TextView
+                android:id="@+id/txtVName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtVUserName"
+                android:hint="Name"
+                android:textSize="15sp" />
 
-    <ImageView
-        android:id="@+id/editProfile"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+            <TextView
+                android:id="@+id/txtVUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/MyProfileImg"
+                android:hint="username"
+                android:textSize="15sp" />
 
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="169dp"
-        android:layout_marginEnd="62dp"
-        android:layout_marginBottom="601dp"
-        android:layout_toEndOf="@+id/MyProfileImg"
-        android:src="@drawable/editicon" />
+            <TextView
+                android:id="@+id/txtVBranch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtVName"
+                android:hint="Branch"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/txtVEmailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtVBranch"
+                android:hint="Email"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/editProfile"
+                android:visibility="invisible"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_margin="5dp"
+                android:src="@drawable/editicon" />
+        </LinearLayout>
+    </LinearLayout>
+
 
     <View
+        android:id="@+id/View"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:backgroundTint="#308FDC" />
+        android:layout_marginTop="150dp"
+        android:backgroundTint="#2323D1" />
 
-    <TextView
-        android:id="@+id/txtVName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtVUserName"
-        android:layout_marginLeft="10sp"
-        android:layout_marginTop="6dp"
-        android:hint="Name"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/txtVUserName"
-        android:layout_width="wrap_content"
-        android:layout_marginStart="10sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/MyProfileImg"
-        android:layout_marginTop="48dp"
-        android:gravity="center"
-        android:hint="username"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/txtVBranch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtVName"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_marginEnd="10sp"
-        android:layout_marginBottom="10sp"
-        android:hint="Branch"
-        android:textSize="15sp" />
-
-
-    <TextView
-        android:id="@+id/txtVEmailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtVBranch"
-        android:layout_margin="10sp"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_marginEnd="10sp"
-        android:layout_marginBottom="10sp"
-        android:hint="Email"
-        android:textSize="15sp" />
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/personal_Posts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/View"/>
 </RelativeLayout>

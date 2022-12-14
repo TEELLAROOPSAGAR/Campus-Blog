@@ -1,7 +1,7 @@
 package com.example.authapp.Adapters;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHolder>{
 
-    ArrayList<String> mediaList;
+    ArrayList<Bitmap> mediaList;
     Context context;
 
-    public MediaAdapter(Context context, ArrayList<String> mediaList){
+    public MediaAdapter(Context context, ArrayList<Bitmap> mediaList){
         this.context = context;
         this.mediaList = mediaList;
     }
@@ -37,8 +37,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     @Override
     public void onBindViewHolder(@NonNull MediaViewHolder holder, int position) {
 //        Glide.with(context).load(Uri.parse(mediaList.get(position))).into(holder.mMedia);
-        holder.mMedia.setImageURI(Uri.parse(mediaList.get(position)));
-        Log.v("uriss",mediaList.get(position));
+        holder.mMedia.setImageBitmap(mediaList.get(position));
+        Log.v("uriss",mediaList.get(position).toString());
     }
 
     @Override
